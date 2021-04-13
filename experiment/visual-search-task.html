@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+  <head>
+    <script src="jspsych-6.3.1/jspsych.js"></script>
+    <script src="webgazer/webgazer.js"></script>
+    <script src="jspsych-6.3.1/extensions/jspsych-ext-webgazer.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-html-keyboard-response.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-webgazer-init-camera.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-webgazer-validate.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-webgazer-calibrate.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-fullscreen.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-html-button-response.js"></script>
+    <link rel="stylesheet" href="jspsych-6.3.1/css/jspsych.css">
+    <style>
+      .jspsych-content { max-width: 100%; }
+      img { width: 50px;}
+    </style>
+  </head>
+  <body></body>
+  <script>
+
+    var trials = [
+      {top_left_image: 'img/blue_circle.png', top_right_image: 'img/orange_circle.png', bottom_left_image: 'img/orange_circle.png', bottom_right_image: 'img/orange_circle.png', target_present: true, target_location: 'top_left', distractor_type: 'color'},
+      {top_left_image: 'img/orange_circle.png', top_right_image: 'img/blue_circle.png', bottom_left_image: 'img/orange_circle.png', bottom_right_image: 'img/orange_circle.png', target_present: true, target_location: 'top_right', distractor_type: 'color'},
+      {top_left_image: 'img/orange_circle.png', top_right_image: 'img/orange_circle.png', bottom_left_image: 'img/blue_circle.png', bottom_right_image: 'img/orange_circle.png', target_present: true, target_location: 'bottom_left', distractor_type: 'color'},
+      {top_left_image: 'img/orange_circle.png', top_right_image: 'img/orange_circle.png', bottom_left_image: 'img/orange_circle.png', bottom_right_image: 'img/blue_circle.png', target_present: true, target_location: 'bottom_right', distractor_type: 'color'},
+      
+      {top_left_image: 'img/blue_circle.png', top_right_image: 'img/blue_square.png', bottom_left_image: 'img/blue_square.png', bottom_right_image: 'img/blue_square.png', target_present: true, target_location: 'top_left', distractor_type: 'shape'},
+      {top_left_image: 'img/blue_square.png', top_right_image: 'img/blue_circle.png', bottom_left_image: 'img/blue_square.png', bottom_right_image: 'img/blue_square.png', target_present: true, target_location: 'top_right', distractor_type: 'shape'},
+      {top_left_image: 'img/blue_square.png', top_right_image: 'img/blue_square.png', bottom_left_image: 'img/blue_circle.png', bottom_right_image: 'img/blue_square.png', target_present: true, target_location: 'bottom_left', distractor_type: 'shape'},
+      {top_left_image: 'img/blue_square.png', top_right_image: 'img/blue_square.png', bottom_left_image: 'img/blue_square.png', bottom_right_image: 'img/blue_circle.png', target_present: true, target_location: 'bottom_right', distractor_type: 'shape'},
+      
+      {top_left_image: 'img/blue_square.png', top_right_image: 'img/orange_square.png', bottom_left_image: 'img/orange_square.png', bottom_right_image: 'img/orange_square.png', target_present: false, target_location: 'top_left', distractor_type: 'color'},
+      {top_left_image: 'img/orange_square.png', top_right_image: 'img/blue_square.png', bottom_left_image: 'img/orange_square.png', bottom_right_image: 'img/orange_square.png', target_present: false, target_location: 'top_right', distractor_type: 'color'},
+      {top_left_image: 'img/orange_square.png', top_right_image: 'img/orange_square.png', bottom_left_image: 'img/blue_square.png', bottom_right_image: 'img/orange_square.png', target_present: false, target_location: 'bottom_left', distractor_type: 'color'},
+      {top_left_image: 'img/orange_square.png', top_right_image: 'img/orange_square.png', bottom_left_image: 'img/orange_square.png', bottom_right_image: 'img/blue_square.png', target_present: false, target_location: 'bottom_right', distractor_type: 'color'},
+      
+      {top_left_image: 'img/blue_square.png', top_right_image: 'img/blue_square.png', bottom_left_image: 'img/blue_square.png', bottom_right_image: 'img/blue_square.png', target_present: false, target_location: 'none', distractor_type: 'shape'},
+      {top_left_image: 'img/blue_square.png', top_right_image: 'img/blue_square.png', bottom_left_image: 'img/blue_square.png', bottom_right_image: 'img/blue_square.png', target_present: false, target_location: 'none', distractor_type: 'shape'},
+      {top_left_image: 'img/blue_square.png', top_right_image: 'img/blue_square.png', bottom_left_image: 'img/blue_square.png', bottom_right_image: 'img/blue_square.png', target_present: false, target_location: 'none', distractor_type: 'shape'},
+      {top_left_image: 'img/blue_square.png', top_right_image: 'img/blue_square.png', bottom_left_image: 'img/blue_square.png', bottom_right_image: 'img/blue_square.png', target_present: false, target_location: 'none', distractor_type: 'shape'},
+    ]
+
+    var fixation = {
+      type: 'html-keyboard-response',
+      stimulus: `<p style="font-size: 60px;">+</p>`,
+      choices: jsPsych.NO_KEYS,
+      trial_duration: 1000
+    }
+
+    var display_trial = {
+      type: 'html-keyboard-response',
+      stimulus: function(){
+          return `<div style="position: relative; width:100vw; height: 100vh;">
+          <img id="top_left" src="${jsPsych.timelineVariable('top_left_image')}" style="position: absolute; left: 25%; top: 25%; transform: translate(-50%, -50%);"></img>
+          <img id="top_right" src="${jsPsych.timelineVariable('top_right_image')}" style="position: absolute; left: 75%; top: 25%; transform: translate(-50%, -50%);"></img>
+          <img id="bottom_left" src="${jsPsych.timelineVariable('bottom_left_image')}" style="position: absolute; left: 25%; top: 75%; transform: translate(-50%, -50%);"></img>
+          <img id="bottom_right" src="${jsPsych.timelineVariable('bottom_right_image')}" style="position: absolute; left: 75%; top: 75%; transform: translate(-50%, -50%);"></img>
+        </div>`
+      },
+      choices: ['p','q'],
+      post_trial_gap: 500,
+      data: {
+        task: 'search',
+        target_present: jsPsych.timelineVariable('target_present'),
+        target_location: jsPsych.timelineVariable('target_location'),
+        distractor_type: jsPsych.timelineVariable('distractor_type')
+      }
+    }
+
+    var display_task = {
+      timeline: [fixation, display_trial],
+      timeline_variables: trials,
+      repetitions: 4,
+      randomize_order: true
+    }
+
+    jsPsych.init({
+      timeline: [display_task]
+    })
+  </script>
+</html>
