@@ -5,73 +5,299 @@
     <script src="webgazer/webgazer.js"></script>
     <script src="jspsych-6.3.1/extensions/jspsych-ext-webgazer.js"></script>
     <script src="jspsych-6.3.1/plugins/jspsych-html-keyboard-response.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-audio-keyboard-response.js"></script>
     <script src="jspsych-6.3.1/plugins/jspsych-webgazer-init-camera.js"></script>
     <script src="jspsych-6.3.1/plugins/jspsych-webgazer-validate.js"></script>
     <script src="jspsych-6.3.1/plugins/jspsych-webgazer-calibrate.js"></script>
     <script src="jspsych-6.3.1/plugins/jspsych-fullscreen.js"></script>
     <script src="jspsych-6.3.1/plugins/jspsych-html-button-response.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-preload.js"></script>
     <link rel="stylesheet" href="jspsych-6.3.1/css/jspsych.css">
     <style>
-      img { width: 200px;}
+      .jspsych-content { max-width: 100%; }
     </style>
   </head>
   <body></body>
   <script>
 
     var trials = [
-      {top_left_image: 'img/blue_circle.png', top_right_image: 'img/orange_circle.png', bottom_left_image: 'img/orange_circle.png', bottom_right_image: 'img/orange_circle.png', target_present: true, target_location: 'top_left', distractor_type: 'color'},
-      {top_left_image: 'img/orange_circle.png', top_right_image: 'img/blue_circle.png', bottom_left_image: 'img/orange_circle.png', bottom_right_image: 'img/orange_circle.png', target_present: true, target_location: 'top_right', distractor_type: 'color'},
-      {top_left_image: 'img/orange_circle.png', top_right_image: 'img/orange_circle.png', bottom_left_image: 'img/blue_circle.png', bottom_right_image: 'img/orange_circle.png', target_present: true, target_location: 'bottom_left', distractor_type: 'color'},
-      {top_left_image: 'img/orange_circle.png', top_right_image: 'img/orange_circle.png', bottom_left_image: 'img/orange_circle.png', bottom_right_image: 'img/blue_circle.png', target_present: true, target_location: 'bottom_right', distractor_type: 'color'},
-      
-      {top_left_image: 'img/blue_circle.png', top_right_image: 'img/blue_square.png', bottom_left_image: 'img/blue_square.png', bottom_right_image: 'img/blue_square.png', target_present: true, target_location: 'top_left', distractor_type: 'shape'},
-      {top_left_image: 'img/blue_square.png', top_right_image: 'img/blue_circle.png', bottom_left_image: 'img/blue_square.png', bottom_right_image: 'img/blue_square.png', target_present: true, target_location: 'top_right', distractor_type: 'shape'},
-      {top_left_image: 'img/blue_square.png', top_right_image: 'img/blue_square.png', bottom_left_image: 'img/blue_circle.png', bottom_right_image: 'img/blue_square.png', target_present: true, target_location: 'bottom_left', distractor_type: 'shape'},
-      {top_left_image: 'img/blue_square.png', top_right_image: 'img/blue_square.png', bottom_left_image: 'img/blue_square.png', bottom_right_image: 'img/blue_circle.png', target_present: true, target_location: 'bottom_right', distractor_type: 'shape'},
-      
-      {top_left_image: 'img/blue_square.png', top_right_image: 'img/orange_square.png', bottom_left_image: 'img/orange_square.png', bottom_right_image: 'img/orange_square.png', target_present: false, target_location: 'top_left', distractor_type: 'color'},
-      {top_left_image: 'img/orange_square.png', top_right_image: 'img/blue_square.png', bottom_left_image: 'img/orange_square.png', bottom_right_image: 'img/orange_square.png', target_present: false, target_location: 'top_right', distractor_type: 'color'},
-      {top_left_image: 'img/orange_square.png', top_right_image: 'img/orange_square.png', bottom_left_image: 'img/blue_square.png', bottom_right_image: 'img/orange_square.png', target_present: false, target_location: 'bottom_left', distractor_type: 'color'},
-      {top_left_image: 'img/orange_square.png', top_right_image: 'img/orange_square.png', bottom_left_image: 'img/orange_square.png', bottom_right_image: 'img/blue_square.png', target_present: false, target_location: 'bottom_right', distractor_type: 'color'},
-      
-      {top_left_image: 'img/blue_square.png', top_right_image: 'img/blue_square.png', bottom_left_image: 'img/blue_square.png', bottom_right_image: 'img/blue_square.png', target_present: false, target_location: 'none', distractor_type: 'shape'},
-      {top_left_image: 'img/blue_square.png', top_right_image: 'img/blue_square.png', bottom_left_image: 'img/blue_square.png', bottom_right_image: 'img/blue_square.png', target_present: false, target_location: 'none', distractor_type: 'shape'},
-      {top_left_image: 'img/blue_square.png', top_right_image: 'img/blue_square.png', bottom_left_image: 'img/blue_square.png', bottom_right_image: 'img/blue_square.png', target_present: false, target_location: 'none', distractor_type: 'shape'},
-      {top_left_image: 'img/blue_square.png', top_right_image: 'img/blue_square.png', bottom_left_image: 'img/blue_square.png', bottom_right_image: 'img/blue_square.png', target_present: false, target_location: 'none', distractor_type: 'shape'},
+      /* go cues */
+      // neutral
+      {target_type: 'go', target_location: 'left', cue_direction: 'both', cue_validity: 'neutral'},
+      {target_type: 'go', target_location: 'right', cue_direction: 'both', cue_validity: 'neutral'},
+
+      // left cue
+      {target_type: 'go', target_location: 'left', cue_direction: 'left', cue_validity: 'valid'},
+      {target_type: 'go', target_location: 'left', cue_direction: 'left', cue_validity: 'valid'},
+      {target_type: 'go', target_location: 'left', cue_direction: 'left', cue_validity: 'valid'},
+      {target_type: 'go', target_location: 'left', cue_direction: 'left', cue_validity: 'valid'},
+      {target_type: 'go', target_location: 'right', cue_direction: 'left', cue_validity: 'invalid'},
+
+      // right cue
+      {target_type: 'go', target_location: 'right', cue_direction: 'right', cue_validity: 'valid'},
+      {target_type: 'go', target_location: 'right', cue_direction: 'right', cue_validity: 'valid'},
+      {target_type: 'go', target_location: 'right', cue_direction: 'right', cue_validity: 'valid'},
+      {target_type: 'go', target_location: 'right', cue_direction: 'right', cue_validity: 'valid'},
+      {target_type: 'go', target_location: 'left', cue_direction: 'right', cue_validity: 'invalid'},
+
+      /* no-go cues */
+      // neutral
+      {target_type: 'no-go', target_location: 'left', cue_direction: 'both', cue_validity: 'neutral'},
+      {target_type: 'no-go', target_location: 'right', cue_direction: 'both', cue_validity: 'neutral'},
+
+      // left cue
+      {target_type: 'no-go', target_location: 'left', cue_direction: 'left', cue_validity: 'valid'},
+      {target_type: 'no-go', target_location: 'left', cue_direction: 'left', cue_validity: 'valid'},
+      {target_type: 'no-go', target_location: 'left', cue_direction: 'left', cue_validity: 'valid'},
+      {target_type: 'no-go', target_location: 'left', cue_direction: 'left', cue_validity: 'valid'},
+      {target_type: 'no-go', target_location: 'right', cue_direction: 'left', cue_validity: 'invalid'},
+
+      // right cue
+      {target_type: 'no-go', target_location: 'right', cue_direction: 'right', cue_validity: 'valid'},
+      {target_type: 'no-go', target_location: 'right', cue_direction: 'right', cue_validity: 'valid'},
+      {target_type: 'no-go', target_location: 'right', cue_direction: 'right', cue_validity: 'valid'},
+      {target_type: 'no-go', target_location: 'right', cue_direction: 'right', cue_validity: 'valid'},
+      {target_type: 'no-go', target_location: 'left', cue_direction: 'right', cue_validity: 'invalid'},
     ]
 
-    var fixation = {
+    var preload = {
+      type: 'preload',
+      audio: [`mp3/correct.mp3`, `mp3/incorrect.mp3`, `mp3/silence.mp3`]
+    }
+
+    var instructions = {
+      timeline: [
+        {
+          type: 'html-keyboard-response',
+          stimulus: `<div style="position: relative; width:100vw; height: 100vh;">
+            <div style="font-size: 100px; position: absolute; top: 50%; left: 25%; transform: translate(-50%, -50%); width: 200px; height: 200px; border: 1px solid #555;"></div>
+            <div style="font-size: 100px; position: absolute; top: 50%; left: 75%; transform: translate(-50%, -50%); width: 200px; height: 200px; border: 1px solid #555;"></div>
+            <div style="position: absolute; bottom: 10%; width: 100%;">
+              <p>Your task in this experiment is to respond to symbols that will appear in the boxes above.</p>
+              <p>Press C to continue.</p>
+            </div>
+            </div>`,
+          choices: ['c']
+        },
+        {
+          type: 'html-keyboard-response',
+          stimulus: `<div style="position: relative; width:100vw; height: 100vh;">
+            <div style="font-size: 100px; position: absolute; top: 50%; left: 25%; transform: translate(-50%, -50%); width: 200px; height: 200px; border: 1px solid #555;">
+              <p style="line-height: 200px; margin: 0;">🔵</p>  
+            </div>
+            <div style="font-size: 100px; position: absolute; top: 50%; left: 75%; transform: translate(-50%, -50%); width: 200px; height: 200px; border: 1px solid #555;"></div>
+            <div style="position: absolute; bottom: 10%; width: 100%;">
+              <p>If the circle appears in the left box, press Q.</p>
+              <p>Press Q to continue.</p>
+            </div>
+            </div>`,
+          choices: ['q']
+        },
+        {
+          type: 'html-keyboard-response',
+          stimulus: `<div style="position: relative; width:100vw; height: 100vh;">
+            <div style="font-size: 100px; position: absolute; top: 50%; left: 25%; transform: translate(-50%, -50%); width: 200px; height: 200px; border: 1px solid #555;">
+              
+            </div>
+            <div style="font-size: 100px; position: absolute; top: 50%; left: 75%; transform: translate(-50%, -50%); width: 200px; height: 200px; border: 1px solid #555;">
+              <p style="line-height: 200px; margin: 0;">🔵</p>    
+            </div>
+            <div style="position: absolute; bottom: 10%; width: 100%;">
+              <p>If the circle appears in the right box, press P.</p>
+              <p>Press P to continue.</p>
+            </div>
+            </div>`,
+          choices: ['p']
+        },
+        {
+          type: 'html-keyboard-response',
+          stimulus: `<div style="position: relative; width:100vw; height: 100vh;">
+            <div style="font-size: 100px; position: absolute; top: 50%; left: 25%; transform: translate(-50%, -50%); width: 200px; height: 200px; border: 1px solid #555;">
+              
+            </div>
+            <div style="font-size: 100px; position: absolute; top: 50%; left: 75%; transform: translate(-50%, -50%); width: 200px; height: 200px; border: 1px solid #555;">
+              <p style="line-height: 200px; margin: 0;">🔷</p>    
+            </div>
+            <div style="position: absolute; bottom: 10%; width: 100%;">
+              <p>If a diamond appears in either box, don't press any keys. Just wait until the time expires.</p>
+              <p>Press C to continue.</p>
+            </div>
+            </div>`,
+          choices: ['c']
+        },
+        {
+          type: 'html-keyboard-response',
+          stimulus: `<div style="position: relative; width:100vw; height: 100vh;">
+            <div style="font-size: 100px; position: absolute; top: 50%; left: 25%; transform: translate(-50%, -50%); width: 200px; height: 200px; border: 1px solid #555;">
+              
+            </div>
+            <div style="font-size: 100px; position: absolute; top: 50%; left: 75%; transform: translate(-50%, -50%); width: 200px; height: 200px; border: 1px solid #555;">   
+            </div>
+            <div style="font-size: 100px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 200px; height: 200px;">
+              <p style="line-height: 200px; margin: 0;">◀️</p>
+            </div>
+            <div style="position: absolute; bottom: 10%; width: 100%;">
+              <p>Before each time a shape appears, a cue will show you where the shape is likely to appear.</p>
+              <p>The shape will usually match the cue, but not always.</p>
+              <p>Press C to continue.</p>
+            </div>
+            </div>`,
+          choices: ['c']
+        },
+        {
+          type: 'html-keyboard-response',
+          stimulus: `<div style="position: relative; width:100vw; height: 100vh;">
+            <div style="font-size: 100px; position: absolute; top: 50%; left: 25%; transform: translate(-50%, -50%); width: 200px; height: 200px; border: 1px solid #555;">
+              <p style="line-height: 200px; margin: 0;">🔵</p>  
+            </div>
+            <div style="font-size: 100px; position: absolute; top: 50%; left: 75%; transform: translate(-50%, -50%); width: 200px; height: 200px; border: 1px solid #555;"></div>
+            <div style="position: absolute; bottom: 10%; width: 100%;">
+              <p>Press Q to continue.</p>
+            </div>
+            </div>`,
+          choices: ['q']
+        },
+        {
+          type: 'html-keyboard-response',
+          stimulus: `<div style="position: relative; width:100vw; height: 100vh;">
+            <div style="font-size: 100px; position: absolute; top: 50%; left: 25%; transform: translate(-50%, -50%); width: 200px; height: 200px; border: 1px solid #555;">
+              
+            </div>
+            <div style="font-size: 100px; position: absolute; top: 50%; left: 75%; transform: translate(-50%, -50%); width: 200px; height: 200px; border: 1px solid #555;">   
+            </div>
+            <div style="font-size: 100px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 200px; height: 200px;">
+              <p style="line-height: 200px; margin: 0;">⏺️</p>
+            </div>
+            <div style="position: absolute; bottom: 10%; width: 100%;">
+              <p>Sometimes the cue won't specify which side the shape is likely to appear on.</p>
+              <p>Press C to continue.</p>
+            </div>
+            </div>`,
+          choices: ['c']
+        },
+        {
+          type: 'html-keyboard-response',
+          stimulus: `<div style="position: relative; width:100vw; height: 100vh;">
+            <div style="font-size: 100px; position: absolute; top: 50%; left: 25%; transform: translate(-50%, -50%); width: 200px; height: 200px; border: 1px solid #555;">
+              
+            </div>
+            <div style="font-size: 100px; position: absolute; top: 50%; left: 75%; transform: translate(-50%, -50%); width: 200px; height: 200px; border: 1px solid #555;">
+              <p style="line-height: 200px; margin: 0;">🔵</p>    
+            </div>
+            <div style="position: absolute; bottom: 10%; width: 100%;">
+              <p>Press P to continue.</p>
+            </div>
+            </div>`,
+          choices: ['p']
+        },
+        {
+          type: 'html-keyboard-response',
+          stimulus: `<p>OK, you're ready to start!</p>
+            <p>There are about 100 trials in the experiment. It should take less than five minutes to finish.</p>
+            <p>Put your fingers on the P and Q keys, and then press either one to start.</p>`,
+          choices: ['p', 'q']
+        },
+    ]
+      
+    }
+
+    var pre_cue_trial = {
+      type: 'audio-keyboard-response',
+      stimulus: function(){
+        var response_trials = jsPsych.data.get().filter({task: 'respond'});
+        if(response_trials.count() > 0){
+          if(response_trials.last(1).values()[0].correct){
+            return `mp3/correct.mp3`;
+          } else {
+            return `mp3/incorrect.mp3`;
+          }
+        } else {
+          return `mp3/silence.mp3`;
+        }
+      },
+      prompt: `<div style="position: relative; width:100vw; height: 100vh;">
+          <div style="font-size: 100px; position: absolute; top: 50%; left: 25%; transform: translate(-50%, -50%); width: 200px; height: 200px; border: 1px solid #555;"></div>
+          <div style="font-size: 100px; position: absolute; top: 50%; left: 75%; transform: translate(-50%, -50%); width: 200px; height: 200px; border: 1px solid #555;"></div>
+        </div>`,
+      trial_duration: 800,
+      choices: jsPsych.NO_KEYS
+    }
+
+    var cue_trial = {
       type: 'html-keyboard-response',
-      stimulus: `<p style="font-size: 60px;">+</p>`,
+      stimulus: function(){
+        var html = `<div style="position: relative; width:100vw; height: 100vh;">
+         <div style="font-size: 100px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 200px; height: 200px;">`
+        if(jsPsych.timelineVariable('cue_direction') == 'left'){
+          html += `<p style="line-height: 200px; margin: 0;">◀️</p>`
+        }
+        if(jsPsych.timelineVariable('cue_direction') == 'right'){
+          html += `<p style="line-height: 200px; margin: 0;">▶️</p>`
+        }
+        if(jsPsych.timelineVariable('cue_direction') == 'both'){
+          html += `<p style="line-height: 200px; margin: 0;">⏺️</p>`
+        }
+        html += `</div>
+          <div style="font-size: 100px; position: absolute; top: 50%; left: 25%; transform: translate(-50%, -50%); width: 200px; height: 200px; border: 1px solid #555;"></div>
+          <div style="font-size: 100px; position: absolute; top: 50%; left: 75%; transform: translate(-50%, -50%); width: 200px; height: 200px; border: 1px solid #555;"></div>
+        </div>`
+        return html;
+      },
       choices: jsPsych.NO_KEYS,
-      trial_duration: 1000
+      trial_duration: 750,
+      data: {
+        task: 'cue'
+      }
     }
 
     var display_trial = {
       type: 'html-keyboard-response',
       stimulus: function(){
-          return `<div style="position: relative; width:100vw; height: 100vh;">
-          <img id="top_left" src="${jsPsych.timelineVariable('top_left_image')}" style="position: absolute; left: 25%; top: 25%; transform: translate(-50%, -50%);"></img>
-          <img id="top_right" src="${jsPsych.timelineVariable('top_right_image')}" style="position: absolute; left: 75%; top: 25%; transform: translate(-50%, -50%);"></img>
-          <img id="bottom_left" src="${jsPsych.timelineVariable('bottom_left_image')}" style="position: absolute; left: 25%; top: 75%; transform: translate(-50%, -50%);"></img>
-          <img id="bottom_right" src="${jsPsych.timelineVariable('bottom_right_image')}" style="position: absolute; left: 75%; top: 75%; transform: translate(-50%, -50%);"></img>
-        </div>`
+        var html = `<div style="position: relative; width:100vw; height: 100vh;">
+          <div style="font-size: 100px; position: absolute; top: 50%; left: 25%; transform: translate(-50%, -50%); width: 200px; height: 200px; border: 1px solid #555;">
+            ${jsPsych.timelineVariable('target_location') == 'left' ? `<p style="line-height: 200px; margin: 0;">${jsPsych.timelineVariable('target_type') == 'go' ? '🔵' : '🔷'}</p>` : ``}
+          </div>
+          <div style="font-size: 100px; position: absolute; top: 50%; left: 75%; transform: translate(-50%, -50%); width: 200px; height: 200px; border: 1px solid #555;">
+            ${jsPsych.timelineVariable('target_location') == 'right' ? `<p style="line-height: 200px; margin: 0;">${jsPsych.timelineVariable('target_type') == 'go' ? '🔵' : '🔷'}</p>` : ``}
+          </div>
+        `
+        return html;
       },
       choices: ['p','q'],
+      trial_duration: 1000,
       data: {
-        task: 'search'
+        target_location: jsPsych.timelineVariable('target_location'),
+        target_type: jsPsych.timelineVariable('target_type'),
+        cue_direction: jsPsych.timelineVariable('cue_direction'),
+        cue_validity: jsPsych.timelineVariable('cue_validity'),
+        task: 'respond'
+      },
+      on_finish: function(data){
+        if(data.response == null){
+          data.correct = data.target_type == 'no-go'
+        }
+        if(data.response == 'p'){
+          data.correct = data.target_location == 'right' && data.target_type == 'go';
+        }
+        if(data.response == 'q'){
+          data.correct = data.target_location == 'left' && data.target_type == 'go';
+        }
       }
     }
 
     var display_task = {
-      timeline: [fixation, display_trial],
+      timeline: [pre_cue_trial, cue_trial, display_trial],
       timeline_variables: trials,
       repetitions: 4,
       randomize_order: true
     }
 
     jsPsych.init({
-      timeline: [display_task]
+      timeline: [
+        preload, 
+        instructions,
+        display_task
+      ]
     })
   </script>
 </html>
