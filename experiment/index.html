@@ -12,6 +12,9 @@
     <script src="jspsych-6.3.1/plugins/jspsych-fullscreen.js"></script>
     <script src="jspsych-6.3.1/plugins/jspsych-html-button-response.js"></script>
     <script src="jspsych-6.3.1/plugins/jspsych-preload.js"></script>
+    <script src="jspsych-6.3.1/plugins/jspsych-call-function.js"></script>
+    <script src="calibration-config.js"></script>
+    <script src="calibration-timeline.js"></script>
     <link rel="stylesheet" href="jspsych-6.3.1/css/jspsych.css">
     <style>
       .jspsych-content { max-width: 100%; }
@@ -244,7 +247,7 @@
         return html;
       },
       choices: jsPsych.NO_KEYS,
-      trial_duration: 750,
+      trial_duration: 250,
       data: {
         task: 'cue'
       }
@@ -254,10 +257,10 @@
       type: 'html-keyboard-response',
       stimulus: function(){
         var html = `<div style="position: relative; width:100vw; height: 100vh;">
-          <div style="font-size: 100px; position: absolute; top: 50%; left: 25%; transform: translate(-50%, -50%); width: 200px; height: 200px; border: 1px solid #555;">
+          <div id="left" style="font-size: 100px; position: absolute; top: 50%; left: 25%; transform: translate(-50%, -50%); width: 200px; height: 200px; border: 1px solid #555;">
             ${jsPsych.timelineVariable('target_location') == 'left' ? `<p style="line-height: 200px; margin: 0;">${jsPsych.timelineVariable('target_type') == 'go' ? '🔵' : '🔷'}</p>` : ``}
           </div>
-          <div style="font-size: 100px; position: absolute; top: 50%; left: 75%; transform: translate(-50%, -50%); width: 200px; height: 200px; border: 1px solid #555;">
+          <div id="right" style="font-size: 100px; position: absolute; top: 50%; left: 75%; transform: translate(-50%, -50%); width: 200px; height: 200px; border: 1px solid #555;">
             ${jsPsych.timelineVariable('target_location') == 'right' ? `<p style="line-height: 200px; margin: 0;">${jsPsych.timelineVariable('target_type') == 'go' ? '🔵' : '🔷'}</p>` : ``}
           </div>
         `
@@ -282,7 +285,10 @@
         if(data.response == 'q'){
           data.correct = data.target_location == 'left' && data.target_type == 'go';
         }
-      }
+      },
+      extensions: [
+        {type: 'webgazer', params: {targets: ['#left','#right']}}
+      ]
     }
 
     var display_task = {
@@ -292,11 +298,40 @@
       randomize_order: true
     }
 
+    var save_server_data = {
+      type: 'call-function',
+      func: function () {
+        var data = jsPsych.data.get().json();
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'php/save_json.php');
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify({ filedata: data }));
+      },
+      post_trial_gap: 1000
+    }
+
+
+    var finish_screen = {
+      type: 'html-keyboard-response',
+      stimulus: `
+        <p>You're finished with the experiment!</p>
+        <p>This experiment is aimed at seeing how we pay attention to cues about where important things are likely to happen.</p>
+        <p>We will compare your eye movements in cases where the cue was correct, incorrect, and neutral to see how quickly you were able to shift your attention.</p>
+        <p>You can close this window now.</p>
+      `,
+      choices: jsPsych.NO_KEYS
+    }
+
     jsPsych.init({
       timeline: [
-        preload, 
+        preload,
+        initial_calibration_timeline, 
         instructions,
-        display_task
+        display_task,
+        finish_screen
+      ],
+      extensions: [
+        {type: 'webgazer'}
       ]
     })
   </script>
