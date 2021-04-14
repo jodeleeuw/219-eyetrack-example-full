@@ -23,6 +23,10 @@
   <body></body>
   <script>
 
+    jsPsych.data.addProperties({
+      subject_id: jsPsych.randomization.randomID(10)
+    });
+
     var trials = [
       /* go cues */
       // neutral
@@ -65,7 +69,37 @@
 
     var preload = {
       type: 'preload',
-      audio: [`mp3/correct.mp3`, `mp3/incorrect.mp3`, `mp3/silence.mp3`]
+      audio: [`mp3/correct.mp3`, `mp3/incorrect.mp3`, `mp3/silence.mp3`, `mp3/mario.mp3`]
+    }
+
+    var cal_audio = null;
+    var audio_adjust = {
+      timeline: [
+        {
+          type: 'html-button-response',
+          stimulus:'<p>This experiment uses audio. On the next screen we will play a sound to allow you to adjust your volume.</p>',
+          choices: ['Continue']
+        },
+        {
+          type: 'call-function',
+          func: function(){
+            cal_audio = new Audio('mp3/mario.mp3');
+            cal_audio.loop = true;
+            cal_audio.play();
+          }
+        },
+        {
+          type: 'html-button-response',
+          stimulus:'<p>Please adjust the volume to a comfortable level and then click to continue.</p>',
+          choices: ['Continue']
+        },
+        {
+          type: 'call-function',
+          func: function(){
+            cal_audio.pause();
+          }
+        }
+      ]
     }
 
     var instructions = {
@@ -325,9 +359,11 @@
     jsPsych.init({
       timeline: [
         preload,
+        audio_adjust,
         initial_calibration_timeline, 
         instructions,
         display_task,
+        save_server_data,
         finish_screen
       ],
       extensions: [
