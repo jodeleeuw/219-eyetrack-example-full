@@ -1,0 +1,24 @@
+---
+title: "Posner Task Analysis"
+output: html_notebook
+---
+
+```{r}
+library(jsonlite)
+library(dplyr)
+```
+
+
+```{r}
+data.files <- list.files('data', full.names = T)
+data.tables <- lapply(data.files, function(file){
+  data.table <- fromJSON(file)
+  return(data.table)
+})
+all.data <- bind_rows(data.tables)
+```
+
+
+```{r}
+task.data <- all.data %>% filter(task == 'respond')
+```
